@@ -57,5 +57,5 @@ func EnumerateFolders(root string) {
 }
 
 func main() {
- EnumerateFiles("C:\\Users\\estan\\Downloads\\Nova pasta (15)\\")
+ EnumerateFiles("")//
 }//agora iremos   ler  nosso arquivo usaremos  ReadFile
