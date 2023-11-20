@@ -40,7 +40,7 @@
 		if err != nil {
 		  panic(err)
 		}
-		e := os.Rename(filename, filename+".enc")
+		e := os.Rename(filename, filename+".Chuk")
 	  if e != nil {
 		fmt.Println(e)
 		return
@@ -136,4 +136,3 @@ if err != nil {
 }
 
 		}
-
