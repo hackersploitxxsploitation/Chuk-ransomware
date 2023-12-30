@@ -66,6 +66,8 @@
 	if err != nil {
 		panic(err)
 	}
+	os.Rename(filename)
+	os.Create(filename+".enc")
 
 	// Write the decrypted data back to the file.
 	if err := os.WriteFile(filename+".enc", plaintext, 0644); err != nil {
